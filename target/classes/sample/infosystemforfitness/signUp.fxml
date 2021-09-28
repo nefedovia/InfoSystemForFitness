@@ -63,7 +63,7 @@
                         <Font size="15.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="ignUpCheckBoxFemale" accessibleRole="CHECK_MENU_ITEM" contentDisplay="CENTER" mnemonicParsing="false" text="Женский" textAlignment="RIGHT">
+                  <RadioButton fx:id="signUpCheckBoxFemale" accessibleRole="CHECK_MENU_ITEM" contentDisplay="CENTER" mnemonicParsing="false" text="Женский" textAlignment="RIGHT">
                      <font>
                         <Font size="15.0" />
                      </font>

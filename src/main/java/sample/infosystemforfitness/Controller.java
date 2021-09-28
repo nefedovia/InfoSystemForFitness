@@ -13,12 +13,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Controller {
-    /* @FXML
+    @FXML
     private URL location;
 
     @FXML
     private ResourceBundle resources;
-*/
+
     @FXML
     private TextField loginField;
 
@@ -33,6 +33,18 @@ public class Controller {
 
     @FXML
     void initialize() {
+
+        authSignInButton.setOnAction(event -> {
+            String  loginText = loginField.getText().trim();
+            String loginPassword = passField.getText().trim();
+
+            if(!loginText.equals("") && !loginPassword.equals("")) {
+                loginUser(loginText, loginPassword);
+            }else{
+                    System.out.println("Login and password is empty!");
+            }
+        });
+
         signUpButton.setOnAction(event -> {
             signUpButton.getScene().getWindow().hide();
 
@@ -50,6 +62,9 @@ public class Controller {
             stage.setScene(new Scene(root));
             stage.showAndWait();
         });
+    }
+
+    private void loginUser(String loginText, String loginPassword) {
     }
 
 }
