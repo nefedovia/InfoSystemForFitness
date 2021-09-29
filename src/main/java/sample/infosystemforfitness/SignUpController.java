@@ -38,6 +38,32 @@ public class SignUpController {
 
     @FXML
     void initialize() {
+
+        signUpButton.setOnAction(event -> {
+
+            signUpNewUser();
+
+        });
+    }
+
+    private void signUpNewUser() {
+        DatabaseHandler dbHandler = new DatabaseHandler();
+
+        String firstName = signUpName.getText();
+        String lastName = signUpSurname.getText();
+        String userName = signUpLogin.getText();
+        String password = signUpPassword.getText();
+        String gender = "";
+        String phone = signUpPhone.getText();
+        if(signUpCheckBoxMale.isSelected())
+            gender = "Мужской";
+        else
+            gender = "Женский";
+
+        User user = new User(firstName, lastName, userName, password,
+                gender, phone);
+
+        dbHandler.signUpUser(user);
     }
 
 }

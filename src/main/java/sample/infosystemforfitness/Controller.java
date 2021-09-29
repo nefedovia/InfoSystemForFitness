@@ -41,7 +41,7 @@ public class Controller {
             if(!loginText.equals("") && !loginPassword.equals("")) {
                 loginUser(loginText, loginPassword);
             }else{
-                    System.out.println("Login and password is empty!");
+                System.out.println("Login and password is empty!");
             }
         });
 
