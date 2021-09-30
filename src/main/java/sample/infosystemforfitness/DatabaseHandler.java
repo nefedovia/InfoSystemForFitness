@@ -47,8 +47,6 @@ public class DatabaseHandler  extends Configs{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
     }
 
     public ResultSet getUser(User user) {
@@ -71,14 +69,6 @@ public class DatabaseHandler  extends Configs{
 
         return resSet;
     }
-=======
-
-    }
-
->>>>>>> master
-=======
-
-    }
-
->>>>>>> master
 }
+
+

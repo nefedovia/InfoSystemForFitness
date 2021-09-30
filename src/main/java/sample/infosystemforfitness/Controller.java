@@ -10,9 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import animation.Shake;
 
 public class Controller {
     @FXML
@@ -34,6 +36,9 @@ public class Controller {
     private Button authSignInButton;
 
     @FXML
+    private Label error;
+
+    @FXML
     void initialize() {
 
         authSignInButton.setOnAction(event -> {
@@ -48,21 +53,7 @@ public class Controller {
         });
 
         signUpButton.setOnAction(event -> {
-            signUpButton.getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sample/infosystemforfitness/signUp.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            openHomePage("/sample/infosystemforfitness/signUp.fxml");
         });
     }
 
@@ -84,7 +75,30 @@ public class Controller {
             }
 
         if (counter >= 1) {
-            System.out.println("Success!");
+            openHomePage("/sample/infosystemforfitness/home.fxml");
+        } else {
+            Shake userLoginAnim = new Shake(loginField);
+            Shake userPassAnim = new Shake(passField);
+            userLoginAnim.playAnim();
+            userPassAnim.playAnim();
         }
+    }
+
+    public void openHomePage(String window) {
+        authSignInButton.getScene().getWindow().hide();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(window));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 }
