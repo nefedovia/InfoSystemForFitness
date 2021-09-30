@@ -17,6 +17,15 @@ public class User {
         this.phone = phone;
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public User() {
+    }
+
+=======
+>>>>>>> master
+=======
+>>>>>>> master
     public String getFirstName() {
         return firstName;
     }
