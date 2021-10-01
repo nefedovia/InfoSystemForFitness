@@ -53,7 +53,7 @@ public class Controller {
         });
 
         signUpButton.setOnAction(event -> {
-            openHomePage("/sample/infosystemforfitness/signUp.fxml");
+            openNewScene("/sample/infosystemforfitness/signUp.fxml");
         });
     }
 
@@ -75,7 +75,7 @@ public class Controller {
             }
 
         if (counter >= 1) {
-            openHomePage("/sample/infosystemforfitness/home.fxml");
+            openNewScene("/sample/infosystemforfitness/home.fxml");
         } else {
             Shake userLoginAnim = new Shake(loginField);
             Shake userPassAnim = new Shake(passField);
@@ -84,7 +84,7 @@ public class Controller {
         }
     }
 
-    public void openHomePage(String window) {
+    public void openNewScene(String window) {
         authSignInButton.getScene().getWindow().hide();
 
         FXMLLoader loader = new FXMLLoader();
