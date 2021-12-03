@@ -10,6 +10,7 @@ public class Const {
     public static final String USERS_PASSWORD = "password";
     public static final String USERS_GENDER = "gender";
     public static final String USERS_PHONE = "phone";
+    public static final String USERS_ROLE = "role";
 
     public static final String TRAIN_TABLE = "trains";
 
@@ -17,4 +18,10 @@ public class Const {
     public static final String TRAIN_NAME = "name";
     public static final String TRAIN_DAY = "day";
     public static final String TRAIN_TIME = "time";
+
+
+    public static final String USERS_TRAININGS_TABLE = "userTrainings";
+    public static final String TRAIN_U_ID = "id_train";
+    public static final String USERS_T_ID = "id_users";
+
 }

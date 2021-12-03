@@ -73,7 +73,42 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM " + Const.TRAIN_TABLE + ";";
+        String select = "SELECT * FROM " + Const.TRAIN_TABLE + " WHERE day > CURREN_DATE;";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return resSet;
+    }
+
+    public ResultSet getRecordTrains() {
+        ResultSet resSet = null;
+
+        String select = "SELECT * FROM trains WHERE day > CURREN_DATE AND id = (SELECT id_train FROM userTrainings WHERE userTrainings.id_user = (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return resSet;
+    }
+
+
+    public ResultSet getPastTrains() {
+        ResultSet resSet = null;
+
+        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id = (SELECT id_train FROM userTrainings WHERE userTrainings.id_user = (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);

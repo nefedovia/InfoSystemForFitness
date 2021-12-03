@@ -2,6 +2,7 @@ package sample.infosystemforfitness;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +19,9 @@ public class TrainListViewCell extends ListCell<Train> {
 
     @FXML
     private Label time;
+
+    @FXML
+    private Button register;
 
     @FXML
     private AnchorPane paneCell;
@@ -49,6 +53,7 @@ public class TrainListViewCell extends ListCell<Train> {
             nameOfTrain.setText(String.valueOf(train.getName()));
             dayOfWeek.setText(train.getDayOfWeek());
             time.setText(train.getTime());
+            register.setText(train.getTypeOfAction());
 
 
 
