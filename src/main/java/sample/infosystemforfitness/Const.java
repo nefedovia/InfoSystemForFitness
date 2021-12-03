@@ -10,4 +10,11 @@ public class Const {
     public static final String USERS_PASSWORD = "password";
     public static final String USERS_GENDER = "gender";
     public static final String USERS_PHONE = "phone";
+
+    public static final String TRAIN_TABLE = "trains";
+
+    public static final String TRAIN_ID = "id";
+    public static final String TRAIN_NAME = "name";
+    public static final String TRAIN_DAY = "day";
+    public static final String TRAIN_TIME = "time";
 }

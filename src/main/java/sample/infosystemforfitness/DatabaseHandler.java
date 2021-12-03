@@ -69,6 +69,24 @@ public class DatabaseHandler  extends Configs{
 
         return resSet;
     }
+
+    public ResultSet getTrains() {
+        ResultSet resSet = null;
+
+        String select = "SELECT * FROM " + Const.TRAIN_TABLE + ";";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return resSet;
+    }
+
 }
 
 
