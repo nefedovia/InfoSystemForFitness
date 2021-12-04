@@ -15,10 +15,7 @@ public class TrainListViewCell extends ListCell<Train> {
     private Label nameOfTrain;
 
     @FXML
-    private Label dayOfWeek;
-
-    @FXML
-    private Label time;
+    private Label date;
 
     @FXML
     private Button register;
@@ -50,10 +47,8 @@ public class TrainListViewCell extends ListCell<Train> {
 
             }
 
-            nameOfTrain.setText(String.valueOf(train.getName()));
-            dayOfWeek.setText(train.getDayOfWeek());
-            time.setText(train.getTime());
-            register.setText(train.getTypeOfAction());
+            nameOfTrain.setText(train.getName());
+            date.setText(train.getDate().toString().substring(0,14));
 
 
 

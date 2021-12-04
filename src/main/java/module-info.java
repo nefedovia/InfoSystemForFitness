@@ -7,4 +7,6 @@ module sample.infosystemforfitness {
 
     opens sample.infosystemforfitness to javafx.fxml;
     exports sample.infosystemforfitness;
+    exports sample.infosystemforfitness.controllers;
+    opens sample.infosystemforfitness.controllers to javafx.fxml;
 }

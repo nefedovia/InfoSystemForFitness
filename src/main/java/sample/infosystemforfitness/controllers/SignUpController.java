@@ -1,15 +1,13 @@
-package sample.infosystemforfitness;
+package sample.infosystemforfitness.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import sample.infosystemforfitness.DatabaseHandler;
+import sample.infosystemforfitness.User;
 
 import java.io.IOException;
 
@@ -45,6 +43,8 @@ public class SignUpController {
     @FXML
     private Button signInBut;
 
+    Alert a = new Alert(Alert.AlertType.NONE);
+
     @FXML
     void initialize() {
 
@@ -74,7 +74,7 @@ public class SignUpController {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.showAndWait();
+        stage.show();
     }
 
     private void signUpNewUser() {
@@ -91,9 +91,19 @@ public class SignUpController {
         else
             gender = "Женский";
 
-        User user = new User(firstName, lastName, userName, password,
-                gender, phone);
 
-        dbHandler.signUpUser(user);
+
+        if(firstName == "" | lastName == "" | userName == "" | password == "" | gender == "" | phone == "" ) {
+
+            a.setAlertType(Alert.AlertType.ERROR);
+
+
+            a.setContentText("Заполните все поля и укажите Ваш пол!");
+
+            a.show();
+        }
+        else{
+            dbHandler.signUpUser(firstName,lastName,userName,password,gender,phone);
+        }
     }
 }

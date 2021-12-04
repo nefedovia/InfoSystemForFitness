@@ -1,33 +1,26 @@
 package sample.infosystemforfitness;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class Train{
 
     private String name;
-    private String dayOfWeek;
-    private String time;
+    private Timestamp date;
     private String typeOfAction;
 
-    public Train(String name, String dayOfWeek,String time,String typeOfAction){
+    public Train(String name, String dayOfWeek,String time){
 
         this.name = name;
-        this.dayOfWeek = dayOfWeek;
-        this.time  = time;
-        this.typeOfAction = typeOfAction;
+        this.date = date;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public String getTime() {
-        return time;
+    public Timestamp getDate() {
+        return date;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getTypeOfAction() {
-        return typeOfAction;
-    }
 }

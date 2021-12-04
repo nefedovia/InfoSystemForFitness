@@ -1,4 +1,4 @@
-package sample.infosystemforfitness;
+package sample.infosystemforfitness.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +32,7 @@ public class HomeController {
     }
 
     public void openNewScene(String window) {
-        btnProfile.getScene().getWindow().hide();
+        btnTrains.getScene().getWindow().hide();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(window));
@@ -46,7 +46,7 @@ public class HomeController {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.showAndWait();
+        stage.show();
     }
     
 

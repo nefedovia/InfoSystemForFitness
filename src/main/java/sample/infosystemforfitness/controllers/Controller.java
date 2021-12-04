@@ -1,4 +1,4 @@
-package sample.infosystemforfitness;
+package sample.infosystemforfitness.controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +15,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import animation.Shake;
+import sample.infosystemforfitness.DatabaseHandler;
+import sample.infosystemforfitness.User;
 
 public class Controller {
     @FXML
@@ -48,7 +50,7 @@ public class Controller {
             if(!loginText.equals("") && !loginPassword.equals("")) {
                 loginUser(loginText, loginPassword);
             }else{
-                System.out.println("Login and password is empty!");
+                loginUser(loginText,loginPassword);
             }
         });
 
@@ -59,23 +61,34 @@ public class Controller {
 
     private void loginUser(String loginText, String loginPassword) {
         DatabaseHandler dbHandler = new DatabaseHandler();
-        User user = new User();
-        user.setUserName(loginText);
-        user.setPassword(loginPassword);
-        ResultSet result = dbHandler.getUser(user);
+        ResultSet result = dbHandler.getUser(loginText,loginPassword);
 
         int counter = 0;
 
         try {
             while (result.next()) {
                 counter++;
+
             }
         } catch (SQLException e) {
                 e.printStackTrace();
             }
 
         if (counter >= 1) {
-            openNewScene("/sample/infosystemforfitness/home.fxml");
+            try {
+                while (result.next()) {
+                   User.init(result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7),result.getString(8));
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if(User.instance().getRole() == "user") {
+                openNewScene("/sample/infosystemforfitness/home.fxml");
+            }   else    {
+                openNewScene("/sample/infosystemforfitness/moder.fxml");
+            }
+
         } else {
             Shake userLoginAnim = new Shake(loginField);
             Shake userPassAnim = new Shake(passField);
@@ -99,6 +112,6 @@ public class Controller {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.showAndWait();
+        stage.show();
     }
 }

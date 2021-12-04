@@ -24,22 +24,24 @@ public class DatabaseHandler  extends Configs{
         return dbConnection;
     }
 
-    public void signUpUser(User user) {
+    public void signUpUser(String firstName, String lastName, String userName, String password, String gender, String phone) {
         String insert = "INSERT INTO " + Const.USER_TABLE + "(" +
                 Const.USERS_FIRSTNAME + "," + Const.USERS_LASTNAME + "," +
                 Const.USERS_USERNAME + "," + Const.USERS_PASSWORD + "," +
-                Const.USERS_GENDER + "," + Const.USERS_PHONE + ")" +
-                "VALUES(?,?,?,?,?,?)";
+                Const.USERS_GENDER + "," + Const.USERS_PHONE + "," + Const.USERS_ROLE+ ")" +
+                "VALUES(?,?,?,?,?,?,?)";
 
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(insert);
-            prSt.setString(1, user.getFirstName());
-            prSt.setString(2, user.getLastName());
-            prSt.setString(3, user.getUserName());
-            prSt.setString(4, user.getPassword());
-            prSt.setString(5, user.getGender());
-            prSt.setString(6, user.getPhone());
+            prSt.setString(1, firstName);
+            prSt.setString(2, lastName);
+            prSt.setString(3, userName);
+            prSt.setString(4, password);
+            prSt.setString(5, gender);
+            prSt.setString(6, phone);
+            prSt.setString(7, "user");
+
 
             prSt.executeUpdate();
         } catch (SQLException e) {
@@ -49,7 +51,7 @@ public class DatabaseHandler  extends Configs{
         }
     }
 
-    public ResultSet getUser(User user) {
+    public ResultSet getUser(String username,String password) {
         ResultSet resSet = null;
 
         String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " +
@@ -57,8 +59,8 @@ public class DatabaseHandler  extends Configs{
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
-            prSt.setString(1, user.getUserName());
-            prSt.setString(2, user.getPassword());
+            prSt.setString(1, username);
+            prSt.setString(2, password);
 
             resSet = prSt.executeQuery();
         } catch (SQLException e) {
@@ -73,7 +75,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM " + Const.TRAIN_TABLE + " WHERE day > CURREN_DATE;";
+        String select = "SELECT * FROM " + Const.TRAIN_TABLE + " WHERE day >= CURREN_DATE AND id NOT IN (SELECT id FROM trains WHERE id IN (SELECT id_train FROM userTrainings WHERE id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() +" ));";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -90,7 +92,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getRecordTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM trains WHERE day > CURREN_DATE AND id = (SELECT id_train FROM userTrainings WHERE userTrainings.id_user = (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT * FROM trains WHERE day >= CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -108,7 +110,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getPastTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id = (SELECT id_train FROM userTrainings WHERE userTrainings.id_user = (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = false and userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -121,6 +123,106 @@ public class DatabaseHandler  extends Configs{
 
         return resSet;
     }
+
+    public String getUserPhoto() throws SQLException {
+        ResultSet resSet = null;
+        String URL = null;
+
+        String select = "SELECT photo FROM users  WHERE username = " + User.instance().getUserName() + "))";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        while(resSet.next()) {
+            URL = resSet.getString(9);
+        }
+        return URL;
+    }
+
+
+    public int getCountOfPassed() throws SQLException {
+        ResultSet resSet = null;
+        int counter = 0;
+
+        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        while(resSet.next()) {
+            counter++;
+        }
+        return counter;
+    }
+
+    public void setTraining(String id_training) throws SQLException {
+        String insert = "INSERT INTO userTrainings VALUES (" + id_training + " , " + getUserId() + ")";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPayed(String id_training) throws SQLException {
+        String update = "UPDATE userTrainings SET payed = true  WHERE id_train = " + id_training + " AND  id_users = " + getUserId() + ")";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(update);
+            prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void denyTraining(String id_training) throws SQLException {
+        String delete = "DELETE FROM userTrainings WHERE id_train = " + id_training + " AND  id_users = " + getUserId() + ")";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(delete);
+            prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String getUserId() throws SQLException {
+        String id = "";
+        ResultSet resSet = null;
+        String select = " SELECT id FROM users WHERE username = " + User.instance().getUserName() + ")";
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        while(resSet.next()){
+            id = resSet.getString(1);
+        }
+        return id;
+    }
+
 
 }
 

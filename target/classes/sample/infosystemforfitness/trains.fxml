@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #DEB887;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.infosystemforfitness.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #DEB887;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.infosystemforfitness.controllers.HomeController">
    <children>
-      <Button layoutX="60.0" layoutY="89.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="233.0" style="-fx-background-color: #DEB887 #DEB887; -fx-border-color: #000000;" text="Домашняя" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0">
+      <Button fx:id="btnHome" layoutX="60.0" layoutY="89.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="233.0" style="-fx-background-color: #DEB887 #DEB887; -fx-border-color: #000000;" text="Домашняя" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0">
          <font>
             <Font size="20.0" />
          </font>
@@ -34,5 +34,10 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Button fx:id="goToTrain" layoutX="547.0" layoutY="626.0" mnemonicParsing="false" text="Записаться">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

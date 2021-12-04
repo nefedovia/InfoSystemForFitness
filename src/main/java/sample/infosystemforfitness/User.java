@@ -28,7 +28,7 @@ public class User {
     }
 
 
-    public static void init(String name, String password){
+    public static void init(String firstName, String lastName, String userName, String password,  String gender,  String phone , String role){
         if(user == null){
             user = new User(firstName,lastName,userName,password,gender,phone);
         }
