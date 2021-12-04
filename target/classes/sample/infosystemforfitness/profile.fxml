@@ -55,7 +55,7 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Отменено тренировок" GridPane.rowIndex="2">
+            <Label text="Оплачено тренировок" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
@@ -70,7 +70,7 @@
                   <Insets right="20.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="trainsDeclined" contentDisplay="RIGHT" text="Label" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Label fx:id="trainsPayed" contentDisplay="RIGHT" text="Label" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
