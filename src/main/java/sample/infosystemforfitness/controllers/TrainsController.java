@@ -68,9 +68,7 @@ public class TrainsController implements Initializable {
     }
 
     public void handleRecordButton(){
-        goToTrain.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+
                 listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
                 String selected = String.valueOf(listView.getSelectionModel().getSelectedItems());
                 String[] record = selected.split("     ");
@@ -83,15 +81,13 @@ public class TrainsController implements Initializable {
                     e.printStackTrace();
                 }
             }
-        });
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        listView.setItems(trainsObservableList);
 
         goToTrain.setOnAction(event -> {
-            openNewScene("/sample/infosystemforfitness/home.fxml");
+            handleRecordButton();
         });
 
         btnHome.setOnAction(event -> {
