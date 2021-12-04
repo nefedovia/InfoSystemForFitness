@@ -71,69 +71,69 @@ public class ProfileController {
     DatabaseHandler dbHandler = new DatabaseHandler();
 
 
-//    public ProfileController() throws SQLException {
-//        //Заполнение тренировок на которые записан
-//        DatabaseHandler dbHandler = new DatabaseHandler();
-//        trainsRecordObservableList = FXCollections.observableArrayList();
-//        counterOfPassed = dbHandler.getCountOfPassed();
-//        counterOfPayed = dbHandler.getCountOfPayed();
-//        ResultSet rs = dbHandler.getRecordTrains();
-//
-//        while(rs.next()){
-//            counterOfRecent++;
-//            trainsRecordObservableList.add(
-//
-//                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
-//                            .append(rs.getString(2)).append("     ")
-//                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
-//        }
-//        //Заполнение прошедших тренировок
-//        trainsPastObservableList = FXCollections.observableArrayList();
-//
-//        ResultSet rs2 = dbHandler.getPastTrains();
-//
-//        while(rs2.next()){
-//
-//            trainsPastObservableList.add(
-//                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
-//                            .append(rs.getString(2)).append("     ")
-//                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
-//        }
-//
-//
-//
-//    }
-//
-//    public void handleDenyButton(){
-//
-//
-//                listViewRecord.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-//                String selected = String.valueOf(listViewRecord.getSelectionModel().getSelectedItems());
-//                String[] record = selected.split("     ");
-//                int index = listViewRecord.getSelectionModel().getSelectedIndex();
-//                listViewRecord.getSelectionModel().getSelectedItems().set(index, "Отменено");
-//                try {
-//                    dbHandler.denyTraining(record[0]);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//
-//    public void handlePayButton(){
-//
-//                listViewPastTrains.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-//                String selected = String.valueOf(listViewPastTrains.getSelectionModel().getSelectedItems());
-//                String[] record = selected.split("     ");
-//
-//                int index = listViewPastTrains.getSelectionModel().getSelectedIndex();
-//                listViewPastTrains.getSelectionModel().getSelectedItems().set(index, "Оплачено");
-//                try {
-//                    dbHandler.setPayed(record[0]);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+    public ProfileController() throws SQLException {
+        //Заполнение тренировок на которые записан
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        trainsRecordObservableList = FXCollections.observableArrayList();
+        counterOfPassed = dbHandler.getCountOfPassed();
+        counterOfPayed = dbHandler.getCountOfPayed();
+        ResultSet rs = dbHandler.getRecordTrains();
+
+        while(rs.next()){
+            counterOfRecent++;
+            trainsRecordObservableList.add(
+
+                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
+                            .append(rs.getString(2)).append("     ")
+                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
+        }
+        //Заполнение прошедших тренировок
+        trainsPastObservableList = FXCollections.observableArrayList();
+
+        ResultSet rs2 = dbHandler.getPastTrains();
+
+        while(rs2.next()){
+
+            trainsPastObservableList.add(
+                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
+                            .append(rs.getString(2)).append("     ")
+                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
+        }
+
+
+
+    }
+
+    public void handleDenyButton(){
+
+
+                listViewRecord.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+                String selected = String.valueOf(listViewRecord.getSelectionModel().getSelectedItems());
+                String[] record = selected.split("     ");
+                int index = listViewRecord.getSelectionModel().getSelectedIndex();
+                listViewRecord.getSelectionModel().getSelectedItems().set(index, "Отменено");
+                try {
+                    dbHandler.denyTraining(record[0]);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+    public void handlePayButton(){
+
+                listViewPastTrains.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+                String selected = String.valueOf(listViewPastTrains.getSelectionModel().getSelectedItems());
+                String[] record = selected.split("     ");
+
+                int index = listViewPastTrains.getSelectionModel().getSelectedIndex();
+                listViewPastTrains.getSelectionModel().getSelectedItems().set(index, "Оплачено");
+                try {
+                    dbHandler.setPayed(record[0]);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 
 
     @FXML
