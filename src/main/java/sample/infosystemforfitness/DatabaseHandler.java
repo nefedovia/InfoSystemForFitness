@@ -106,6 +106,26 @@ public class DatabaseHandler  extends Configs{
         return resSet;
     }
 
+    public void addTrain(String name,String day){
+        String insert = "INSERT INTO " + Const.TRAIN_TABLE + "(" +
+                Const.TRAIN_NAME + "," + Const.TRAIN_DAY +  ")" +
+                "VALUES(?,?)";
+
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            prSt.setString(1, name);
+            prSt.setString(2, day);
+
+
+            prSt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public ResultSet getPastTrains() {
         ResultSet resSet = null;
@@ -122,6 +142,27 @@ public class DatabaseHandler  extends Configs{
         }
 
         return resSet;
+    }
+
+    public int getCountOfPayed() throws SQLException {
+        ResultSet resSet = null;
+        int counter = 0;
+
+        String select = "SELECT count(*) FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = true and userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet = prSt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        while (resSet.next()) {
+            counter++;
+        }
+
+        return counter;
     }
 
     public String getUserPhoto() throws SQLException {

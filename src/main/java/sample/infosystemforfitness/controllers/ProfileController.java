@@ -1,9 +1,6 @@
 package sample.infosystemforfitness.controllers;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,19 +8,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.infosystemforfitness.DatabaseHandler;
-import sample.infosystemforfitness.Train;
 import sample.infosystemforfitness.User;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfileController {
@@ -48,7 +41,7 @@ public class ProfileController {
     private Label trainsRecent;
 
     @FXML
-    private Label trainsDeclined;
+    private Label trainsPayed;
 
     @FXML
     private Label name;
@@ -70,6 +63,8 @@ public class ProfileController {
 
     private int counterOfRecent = 0;
 
+    private int counterOfPayed;
+
     File file = new File("/home/lasas/project/InfoSystemForFitness/src/main/resources/image.png");
 
 
@@ -81,7 +76,7 @@ public class ProfileController {
 //        DatabaseHandler dbHandler = new DatabaseHandler();
 //        trainsRecordObservableList = FXCollections.observableArrayList();
 //        counterOfPassed = dbHandler.getCountOfPassed();
-//
+//        counterOfPayed = dbHandler.getCountOfPayed();
 //        ResultSet rs = dbHandler.getRecordTrains();
 //
 //        while(rs.next()){
