@@ -59,42 +59,34 @@ public class Controller {
         });
     }
 
-    private void loginUser(String loginText, String loginPassword) {
+    private void loginUser(String loginText, String loginPassword){
         DatabaseHandler dbHandler = new DatabaseHandler();
         ResultSet result = dbHandler.getUser(loginText,loginPassword);
-
-        int counter = 0;
+        String roleOfUser = "";
 
         try {
-            while (result.next()) {
-                counter++;
 
-            }
+              while (result.next()) {
+
+                  User.init(result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7),result.getString(8));
+
+              }
         } catch (SQLException e) {
                 e.printStackTrace();
-            }
+        }
+        roleOfUser = User.instance().getRole();
+        System.out.println(roleOfUser);
+                if (roleOfUser.equals("moder")) {
 
-        if (counter >= 1) {
-            try {
-                while (result.next()) {
-                   User.init(result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7),result.getString(8));
+                    openNewScene("/sample/infosystemforfitness/moder.fxml");
+                } else {
+
+                    openNewScene("/sample/infosystemforfitness/home.fxml");
 
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if(User.instance().getRole() == "user") {
-                openNewScene("/sample/infosystemforfitness/home.fxml");
-            }   else    {
-                openNewScene("/sample/infosystemforfitness/moder.fxml");
-            }
 
-        } else {
-            Shake userLoginAnim = new Shake(loginField);
-            Shake userPassAnim = new Shake(passField);
-            userLoginAnim.playAnim();
-            userPassAnim.playAnim();
-        }
+
+
     }
 
     public void openNewScene(String window) {

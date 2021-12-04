@@ -1,5 +1,6 @@
 package sample.infosystemforfitness.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -17,6 +19,7 @@ import sample.infosystemforfitness.User;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfileController {
@@ -63,7 +66,7 @@ public class ProfileController {
 
     private int counterOfRecent = 0;
 
-    private int counterOfPayed;
+    private int counterOfPayed = 0;
 
     File file = new File("/home/lasas/project/InfoSystemForFitness/src/main/resources/image.png");
 
@@ -143,7 +146,7 @@ public class ProfileController {
         imageView.setImage(image);
 
 
-
+        trainsPayed.setText(Integer.toString(counterOfPayed));
         trainsPassed.setText(Integer.toString(counterOfPassed));
         trainsRecent.setText(Integer.toString(counterOfRecent));
         name.setText(User.instance().getFirstName() + " " + User.instance().getLastName());

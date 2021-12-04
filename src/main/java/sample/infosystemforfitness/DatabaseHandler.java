@@ -54,14 +54,10 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getUser(String username,String password) {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " +
-                Const.USERS_USERNAME + "=? AND " + Const.USERS_PASSWORD + "=?";
+        String select = "SELECT * FROM users WHERE username = \"" + username + "\" AND password = \"" + password + "\";";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
-            prSt.setString(1, username);
-            prSt.setString(2, password);
-
             resSet = prSt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +71,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM " + Const.TRAIN_TABLE + " WHERE day >= CURREN_DATE AND id NOT IN (SELECT id FROM trains WHERE id IN (SELECT id_train FROM userTrainings WHERE id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() +" ));";
+        String select = "SELECT * FROM " + Const.TRAIN_TABLE + " WHERE day >= CURRENT_DATE AND id NOT IN (SELECT id FROM trains WHERE id IN (SELECT id_train FROM userTrainings WHERE id_users IN (SELECT id FROM users WHERE username = \"" + User.instance().getUserName() +"\" ));";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -92,7 +88,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getRecordTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM trains WHERE day >= CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT * FROM trains WHERE day >= CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE id_users IN (SELECT id FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -130,7 +126,7 @@ public class DatabaseHandler  extends Configs{
     public ResultSet getPastTrains() {
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = false and userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT * FROM trains WHERE day < CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = false and id_users IN (SELECT id FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -148,7 +144,7 @@ public class DatabaseHandler  extends Configs{
         ResultSet resSet = null;
         int counter = 0;
 
-        String select = "SELECT count(*) FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = true and userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT count(*) FROM trains WHERE day < CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = true and id_users IN (SELECT id FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
@@ -190,7 +186,7 @@ public class DatabaseHandler  extends Configs{
         ResultSet resSet = null;
         int counter = 0;
 
-        String select = "SELECT * FROM trains WHERE day < CURREN_DATE AND id IN (SELECT id_train FROM userTrainings WHERE userTrainings.id_user IN (SELECT id FROM users WHERE username = " + User.instance().getUserName() + "))";
+        String select = "SELECT * FROM trains WHERE day < CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE id_users IN (SELECT id FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
