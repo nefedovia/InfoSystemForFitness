@@ -41,29 +41,8 @@ public class TrainsController implements Initializable {
 
     DatabaseHandler dbHandler = new DatabaseHandler();
     public TrainsController() throws SQLException {
-        DatabaseHandler dbHandler = new DatabaseHandler();
-        trainsObservableList = FXCollections.observableArrayList();
-
-        ResultSet rs = dbHandler.getTrains();
-
-        while(rs.next()){
-            trainsObservableList.add(
-                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                            .append(rs.getString(2)).append("     ")
-                            .append(rs.getDate(3).toString().substring(0,14)).toString())
-            );
-        }
-
-        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 
-        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-            }
-        });
 
     }
 
@@ -84,6 +63,23 @@ public class TrainsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        trainsObservableList = FXCollections.observableArrayList();
+
+        ResultSet rs = dbHandler.getTrains();
+        try {
+            while (rs.next()) {
+                trainsObservableList.add(
+                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
+                                .append(rs.getString(2)).append("     ")
+                                .append(rs.getDate(3).toString()))
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
        listView.setItems(trainsObservableList);
 
         goToTrain.setOnAction(event -> {

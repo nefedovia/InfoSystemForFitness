@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import animation.Shake;
 import sample.infosystemforfitness.DatabaseHandler;
@@ -40,6 +37,8 @@ public class Controller {
     @FXML
     private Label error;
 
+    Alert a = new Alert(Alert.AlertType.NONE);
+
     @FXML
     void initialize() {
 
@@ -50,7 +49,13 @@ public class Controller {
             if(!loginText.equals("") && !loginPassword.equals("")) {
                 loginUser(loginText, loginPassword);
             }else{
-                loginUser(loginText,loginPassword);
+                a.setAlertType(Alert.AlertType.ERROR);
+
+
+                a.setContentText("Необходимо заполнить поля");
+
+                a.show();
+
             }
         });
 
@@ -79,9 +84,18 @@ public class Controller {
                 if (roleOfUser.equals("moder")) {
 
                     openNewScene("/sample/infosystemforfitness/moder.fxml");
-                } else {
+                } else if(roleOfUser.equals("user")){
 
                     openNewScene("/sample/infosystemforfitness/home.fxml");
+
+                } else{
+
+                    a.setAlertType(Alert.AlertType.ERROR);
+
+
+                    a.setContentText("Неправильный логин или пароль.");
+
+                    a.show();
 
                 }
 

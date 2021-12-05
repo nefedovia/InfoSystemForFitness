@@ -76,32 +76,13 @@ public class ProfileController {
 
     public ProfileController() throws SQLException {
         //Заполнение тренировок на которые записан
-        DatabaseHandler dbHandler = new DatabaseHandler();
-        trainsRecordObservableList = FXCollections.observableArrayList();
+
         counterOfPassed = dbHandler.getCountOfPassed();
         counterOfPayed = dbHandler.getCountOfPayed();
-        ResultSet rs = dbHandler.getRecordTrains();
 
-        while(rs.next()){
-            counterOfRecent++;
-            trainsRecordObservableList.add(
 
-                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                            .append(rs.getString(2)).append("     ")
-                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
-        }
+
         //Заполнение прошедших тренировок
-        trainsPastObservableList = FXCollections.observableArrayList();
-
-        ResultSet rs2 = dbHandler.getPastTrains();
-
-        while(rs2.next()){
-
-            trainsPastObservableList.add(
-                    new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                            .append(rs.getString(2)).append("     ")
-                            .append(rs.getDate(3).toString().substring(0,14)).toString()) );
-        }
 
 
 
@@ -141,6 +122,37 @@ public class ProfileController {
 
     @FXML
     void initialize() throws MalformedURLException, SQLException {
+
+        trainsPastObservableList = FXCollections.observableArrayList();
+
+        ResultSet rs2 = dbHandler.getPastTrains();
+        try {
+            while (rs2.next()) {
+
+                trainsPastObservableList.add(
+                        new String(new StringBuilder().append(rs2.getString(1)).append("     ")
+                                .append(rs2.getString(2)).append("     ")
+                                .append(rs2.getDate(3).toString().substring(0, 14)).toString()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        trainsRecordObservableList = FXCollections.observableArrayList();
+        ResultSet rs = dbHandler.getRecordTrains();
+        try {
+            while (rs.next()) {
+                counterOfRecent++;
+                trainsRecordObservableList.add(
+
+                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
+                                .append(rs.getString(2)).append("     ")
+                                .append(rs.getDate(3).toString().substring(0, 14)).toString()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Image image = new Image("https://thispersondoesnotexist.com/image");
         imageView.setImage(image);

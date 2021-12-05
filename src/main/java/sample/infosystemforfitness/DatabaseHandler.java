@@ -144,7 +144,7 @@ public class DatabaseHandler  extends Configs{
         ResultSet resSet = null;
         int counter = 0;
 
-        String select = "SELECT count(*) FROM trains WHERE day <= CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = true and id_users IN (SELECT idusers FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
+        String select = "SELECT * FROM trains WHERE day <= CURRENT_DATE AND id IN (SELECT id_train FROM userTrainings WHERE payed = true and id_users IN (SELECT idusers FROM users WHERE username = \"" + User.instance().getUserName() + "\"))";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
