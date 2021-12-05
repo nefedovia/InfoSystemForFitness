@@ -41,7 +41,6 @@ public class TrainsController implements Initializable {
     @FXML
     private ListView<Label> listView;
 
-    private ObservableList<String> trainsObservableList;
 
     DatabaseHandler dbHandler = new DatabaseHandler();
 
@@ -50,8 +49,10 @@ public class TrainsController implements Initializable {
 
 
 
+
     @FXML
     public void fillList() {
+        listView.getItems().clear();
 
         ResultSet rs = dbHandler.getTrains();
 
@@ -61,9 +62,10 @@ public class TrainsController implements Initializable {
 
                 int id = rs.getInt(1);
                  Label lbl = new Label();
-                lbl.setText(rs.getString(2) + rs.getDate(3).toString());
+                 lbl.setUserData(id);
+                lbl.setText(rs.getString(2) +"   "+ rs.getTimestamp(3).toString());
                 lbl.setOnMouseClicked((MouseEvent e)-> {
-                   buffer = id;
+                   buffer = (int) lbl.getUserData();
                 });
                 listView.getItems().add(lbl);
 
@@ -76,9 +78,10 @@ public class TrainsController implements Initializable {
 
     public void handleRecordButton(){
 try {
-    if(buffer == 0) {
-        dbHandler.setTraining(String.valueOf(buffer));
-    }
+        if(buffer != 0) {
+            dbHandler.setTraining(String.valueOf(buffer));
+        }
+
 } catch (SQLException e) {
     e.printStackTrace();
 }
@@ -87,14 +90,9 @@ try {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
         goToTrain.setOnAction(event -> {
 
-
                 handleRecordButton();
-
 
         });
 

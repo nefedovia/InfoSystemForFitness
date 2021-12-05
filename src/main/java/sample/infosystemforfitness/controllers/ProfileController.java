@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.infosystemforfitness.DatabaseHandler;
 import sample.infosystemforfitness.User;
@@ -36,6 +37,8 @@ public class ProfileController {
     @FXML
     private Button payButton;
 
+    @FXML
+    private Button refresh;
 
     @FXML
     private Label trainsPassed;
@@ -53,14 +56,12 @@ public class ProfileController {
     private ImageView imageView ;
 
     @FXML
-    private ListView<String> listViewRecord;
+    private ListView<Label> listViewRecord;
 
     @FXML
-    private ListView<String> listViewPastTrains;
+    private ListView<Label> listViewPastTrains;
 
-    private ObservableList<String> trainsRecordObservableList;
 
-    private ObservableList<String> trainsPastObservableList;
 
     private int counterOfPassed;
 
@@ -70,16 +71,65 @@ public class ProfileController {
 
     File file = new File("/home/lasas/project/InfoSystemForFitness/src/main/resources/image.png");
 
+    int bufferPast = 0;
+    int bufferRecord = 0;
+
 
     DatabaseHandler dbHandler = new DatabaseHandler();
 
 
-    public ProfileController() throws SQLException {
-        //Заполнение тренировок на которые записан
+    public void  fillList(){
 
-        counterOfPassed = dbHandler.getCountOfPassed();
-        counterOfPayed = dbHandler.getCountOfPayed();
+        listViewPastTrains.getItems().clear();
+        listViewRecord.getItems().clear();
 
+
+
+        try {
+            counterOfPayed = dbHandler.getCountOfPayed();
+            counterOfPassed = dbHandler.getCountOfPassed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        ResultSet rs = dbHandler.getRecordTrains();
+        ResultSet rs2 = dbHandler.getPastTrains();
+
+
+        try {
+            while (rs2.next()) {
+
+                int id = rs2.getInt(1);
+                Label lbl = new Label();
+                lbl.setUserData(id);
+                lbl.setText(rs2.getString(2) +"   "+ rs2.getTimestamp(3).toString());
+                lbl.setOnMouseClicked((MouseEvent e)-> {
+                    bufferPast = (int) lbl.getUserData();
+                });
+                listViewPastTrains.getItems().add(lbl);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            while (rs.next()) {
+
+                int id = rs.getInt(1);
+                Label lbl = new Label();
+                lbl.setUserData(id);
+                lbl.setText(rs.getString(2) +"   "+ rs.getTimestamp(3).toString());
+                lbl.setOnMouseClicked((MouseEvent e)-> {
+                    bufferRecord = (int) lbl.getUserData();
+                });
+                listViewRecord.getItems().add(lbl);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         //Заполнение прошедших тренировок
@@ -91,13 +141,9 @@ public class ProfileController {
     public void handleDenyButton(){
 
 
-                listViewRecord.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-                String selected = String.valueOf(listViewRecord.getSelectionModel().getSelectedItems());
-                String[] record = selected.split("     ");
-                int index = listViewRecord.getSelectionModel().getSelectedIndex();
-                listViewRecord.getSelectionModel().getSelectedItems().set(index, "Отменено");
+
                 try {
-                    dbHandler.denyTraining(record[0]);
+                    dbHandler.denyTraining(String.valueOf(bufferRecord));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -106,14 +152,9 @@ public class ProfileController {
 
     public void handlePayButton(){
 
-                listViewPastTrains.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-                String selected = String.valueOf(listViewPastTrains.getSelectionModel().getSelectedItems());
-                String[] record = selected.split("     ");
 
-                int index = listViewPastTrains.getSelectionModel().getSelectedIndex();
-                listViewPastTrains.getSelectionModel().getSelectedItems().set(index, "Оплачено");
                 try {
-                    dbHandler.setPayed(record[0]);
+                    dbHandler.setPayed(String.valueOf(bufferPast));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -121,38 +162,9 @@ public class ProfileController {
 
 
     @FXML
-    void initialize() throws MalformedURLException, SQLException {
-
-        trainsPastObservableList = FXCollections.observableArrayList();
-
-        ResultSet rs2 = dbHandler.getPastTrains();
-        try {
-            while (rs2.next()) {
-
-                trainsPastObservableList.add(
-                        new String(new StringBuilder().append(rs2.getString(1)).append("     ")
-                                .append(rs2.getString(2)).append("     ")
-                                .append(rs2.getDate(3).toString().substring(0, 14)).toString()));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    void initialize(){
 
 
-        trainsRecordObservableList = FXCollections.observableArrayList();
-        ResultSet rs = dbHandler.getRecordTrains();
-        try {
-            while (rs.next()) {
-                counterOfRecent++;
-                trainsRecordObservableList.add(
-
-                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                                .append(rs.getString(2)).append("     ")
-                                .append(rs.getDate(3).toString().substring(0, 14)).toString()));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         Image image = new Image("https://thispersondoesnotexist.com/image");
         imageView.setImage(image);
@@ -163,19 +175,21 @@ public class ProfileController {
         trainsRecent.setText(Integer.toString(counterOfRecent));
         name.setText(User.instance().getFirstName() + " " + User.instance().getLastName());
 
-        listViewRecord.setItems(trainsRecordObservableList);
 
-        listViewPastTrains.setItems(trainsPastObservableList);
 
         btnTrains.setOnAction(event -> {
             openNewScene("/sample/infosystemforfitness/trains.fxml");
         });
 
         payButton.setOnAction(event -> {
-//            handlePayButton();
+            handlePayButton();
         });
         denyButton.setOnAction(event -> {
-//            handleDenyButton();
+           handleDenyButton();
+        });
+
+        refresh.setOnAction(event -> {
+            fillList();
         });
 
         btnHome.setOnAction(event -> {
