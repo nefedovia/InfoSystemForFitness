@@ -1,19 +1,20 @@
 package sample.infosystemforfitness.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.infosystemforfitness.DatabaseHandler;
 
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TrainsController implements Initializable {
@@ -30,57 +30,60 @@ public class TrainsController implements Initializable {
     private Button btnHome;
 
     @FXML
+    private Button refresh;
+
+    @FXML
     private Button btnProfile;
 
     @FXML
     private Button goToTrain;
 
     @FXML
-    private ListView<String> listView;
+    private ListView<Label> listView;
 
     private ObservableList<String> trainsObservableList;
 
     DatabaseHandler dbHandler = new DatabaseHandler();
-    public TrainsController() {
+
+    int buffer = 0;
 
 
+
+
+    @FXML
+    public void fillList() {
 
         ResultSet rs = dbHandler.getTrains();
-        ArrayList<String> records = new ArrayList();
+
+
         try {
             while (rs.next()) {
 
-                 records.add(       new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                                .append(rs.getString(2)).append("     ")
-                                .append(rs.getDate(3).toString()))
-                 );
-
+                int id = rs.getInt(1);
+                 Label lbl = new Label();
+                lbl.setText(rs.getString(2) + rs.getDate(3).toString());
+                lbl.setOnMouseClicked((MouseEvent e)-> {
+                   buffer = id;
+                });
+                listView.getItems().add(lbl);
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        ObservableList<String> listFilament = FXCollections.observableArrayList(records);
-        listView.setItems(listFilament);
-        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-
     }
 
     public void handleRecordButton(){
+try {
+    if(buffer == 0) {
+        dbHandler.setTraining(String.valueOf(buffer));
+    }
+} catch (SQLException e) {
+    e.printStackTrace();
+}
 
-                String selected = String.valueOf(listView.getSelectionModel().getSelectedItems());
-                String[] record = selected.split("     ");
-
-                int index = listView.getSelectionModel().getSelectedIndex();
-                listView.getSelectionModel().getSelectedItems().set(index, "Запись сделана");
-                try {
-                    dbHandler.setTraining(record[0]);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -88,7 +91,11 @@ public class TrainsController implements Initializable {
 
 
         goToTrain.setOnAction(event -> {
-            handleRecordButton();
+
+
+                handleRecordButton();
+
+
         });
 
         btnHome.setOnAction(event -> {
@@ -97,6 +104,10 @@ public class TrainsController implements Initializable {
 
         btnProfile.setOnAction(event -> {
             openNewScene("/sample/infosystemforfitness/profile.fxml");
+        });
+
+        refresh.setOnAction(event -> {
+           fillList();
         });
     }
 
