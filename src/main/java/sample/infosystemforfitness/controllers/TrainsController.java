@@ -57,8 +57,9 @@ public class TrainsController implements Initializable {
             e.printStackTrace();
         }
 
-        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
         listView.setItems(trainsObservableList);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 
     }
