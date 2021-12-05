@@ -161,25 +161,6 @@ public class DatabaseHandler  extends Configs{
         return counter;
     }
 
-    public String getUserPhoto() throws SQLException {
-        ResultSet resSet = null;
-        String URL = null;
-
-        String select = "SELECT photo FROM users  WHERE username = " + User.instance().getUserName() + "))";
-
-        try {
-            PreparedStatement prSt = getDbConnection().prepareStatement(select);
-            resSet = prSt.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        while(resSet.next()) {
-            URL = resSet.getString(9);
-        }
-        return URL;
-    }
 
 
     public int getCountOfPassed() throws SQLException {
@@ -203,7 +184,7 @@ public class DatabaseHandler  extends Configs{
     }
 
     public void setTraining(String id_training) throws SQLException {
-        String insert = "INSERT INTO userTrainings VALUES (" + id_training + " , " + getUserId() + ")";
+        String insert = "INSERT INTO userTrainings VALUES (" + id_training + " , " + getUserId() + ", false)";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(insert);
