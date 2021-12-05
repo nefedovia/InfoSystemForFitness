@@ -40,8 +40,25 @@ public class TrainsController implements Initializable {
     private ObservableList<String> trainsObservableList;
 
     DatabaseHandler dbHandler = new DatabaseHandler();
-    public TrainsController() throws SQLException {
+    public TrainsController() {
 
+
+
+        ResultSet rs = dbHandler.getTrains();
+        try {
+            while (rs.next()) {
+                trainsObservableList.add(
+                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
+                                .append(rs.getString(2)).append("     ")
+                                .append(rs.getDate(3).toString()))
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listView.setItems(trainsObservableList);
 
 
     }
@@ -64,23 +81,7 @@ public class TrainsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        trainsObservableList = FXCollections.observableArrayList();
 
-        ResultSet rs = dbHandler.getTrains();
-        try {
-            while (rs.next()) {
-                trainsObservableList.add(
-                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
-                                .append(rs.getString(2)).append("     ")
-                                .append(rs.getDate(3).toString()))
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-       listView.setItems(trainsObservableList);
 
         goToTrain.setOnAction(event -> {
             handleRecordButton();
