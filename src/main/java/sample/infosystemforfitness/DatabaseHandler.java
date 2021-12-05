@@ -226,7 +226,7 @@ public class DatabaseHandler  extends Configs{
     public String getUserId() throws SQLException {
         String id = "";
         ResultSet resSet = null;
-        String select = " SELECT idusers FROM users WHERE username = " + User.instance().getUserName() + ")";
+        String select = " SELECT idusers FROM users WHERE username = \"" + User.instance().getUserName() + "\")";
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
             resSet = prSt.executeQuery();
