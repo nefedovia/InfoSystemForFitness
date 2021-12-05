@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TrainsController implements Initializable {
@@ -45,20 +46,23 @@ public class TrainsController implements Initializable {
 
 
         ResultSet rs = dbHandler.getTrains();
+        ArrayList<String> records = new ArrayList();
         try {
             while (rs.next()) {
-                trainsObservableList.add(
-                        new String(new StringBuilder().append(rs.getString(1)).append("     ")
+
+                 records.add(       new String(new StringBuilder().append(rs.getString(1)).append("     ")
                                 .append(rs.getString(2)).append("     ")
                                 .append(rs.getDate(3).toString()))
-                );
+                 );
+
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
-        listView.setItems(trainsObservableList);
+        ObservableList<String> listFilament = FXCollections.observableArrayList(records);
+        listView.setItems(listFilament);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 
@@ -66,7 +70,6 @@ public class TrainsController implements Initializable {
 
     public void handleRecordButton(){
 
-                listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
                 String selected = String.valueOf(listView.getSelectionModel().getSelectedItems());
                 String[] record = selected.split("     ");
 
