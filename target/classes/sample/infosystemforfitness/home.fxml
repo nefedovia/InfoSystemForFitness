@@ -9,21 +9,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #DEB887;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.infosystemforfitness.controllers.HomeController">
    <children>
-      <Label layoutX="370.0" layoutY="101.0" text="Текстовое поле с приветствием">
+      <Label layoutX="334.0" layoutY="119.0" prefHeight="103.0" prefWidth="578.0" text="Для того, чтобы записаться на занятия перейдите в раздел &quot;Тренировки&quot;" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font name="NimbusSans-Regular" size="30.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <ImageView fitHeight="382.0" fitWidth="437.0" layoutX="414.0" layoutY="161.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="382.0" fitWidth="437.0" layoutX="414.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../image.png" />
          </image>
       </ImageView>
-      <Label layoutX="324.0" layoutY="574.0" text="Крутая картинка с лого фитнес-зала (по пока какая картинка)">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
       <Button layoutX="60.0" layoutY="89.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="233.0" style="-fx-background-color: #CD853F; -fx-border-color: #000000;" text="Домашняя" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0">
          <font>
             <Font size="20.0" />
@@ -39,5 +34,10 @@
             <Font size="20.0" />
          </font>
       </Button>
+      <Label layoutX="420.0" layoutY="83.0" text="Добро пожаловать в Cult">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

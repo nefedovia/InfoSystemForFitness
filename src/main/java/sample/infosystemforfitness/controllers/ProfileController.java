@@ -65,11 +65,9 @@ public class ProfileController {
 
     private int counterOfPassed;
 
-    private int counterOfRecent = 0;
+    private int counterOfRecent;
 
-    private int counterOfPayed = 0;
-
-    File file = new File("/home/lasas/project/InfoSystemForFitness/src/main/resources/image.png");
+    private int counterOfPayed;
 
     int bufferPast = 0;
     int bufferRecord = 0;
@@ -84,13 +82,18 @@ public class ProfileController {
         listViewRecord.getItems().clear();
 
 
-
         try {
+            counterOfRecent = dbHandler.getCountOfRecent();
             counterOfPayed = dbHandler.getCountOfPayed();
             counterOfPassed = dbHandler.getCountOfPassed();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+        trainsPayed.setText(Integer.toString(counterOfPayed));
+        trainsPassed.setText(Integer.toString(counterOfPassed));
+        trainsRecent.setText(Integer.toString(counterOfRecent));
 
 
         ResultSet rs = dbHandler.getRecordTrains();
@@ -170,9 +173,6 @@ public class ProfileController {
         imageView.setImage(image);
 
 
-        trainsPayed.setText(Integer.toString(counterOfPayed));
-        trainsPassed.setText(Integer.toString(counterOfPassed));
-        trainsRecent.setText(Integer.toString(counterOfRecent));
         name.setText(User.instance().getFirstName() + " " + User.instance().getLastName());
 
 
